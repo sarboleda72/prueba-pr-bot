@@ -185,3 +185,5 @@ querys_test/
 
 # auxiliar params file
 params_aux.json
+
+node_modules/
