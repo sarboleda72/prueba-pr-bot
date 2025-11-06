@@ -1,1 +1,0 @@
-const text = "este es el controlador de ";
