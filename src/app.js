@@ -1,33 +1,65 @@
-#!/usr/bin/env node
-
 /**
- * 🤖 PR Code Reviewer - GitHub App Server
- * 
- * Este archivo inicia el servidor que maneja webhooks de GitHub
- * y ejecuta revisiones automáticas de Pull Requests.
+ * @fileoverview Configuración principal de la aplicación Express
+ * @module app
+ * @description Configura middleware, rutas y manejo de errores para la aplicación
  */
 
-// Cargar variables de entorno desde .env
-require('dotenv').config();
+import express from 'express';
+import routes from './routes/index.js';
+import { swaggerUi, swaggerDocument, swaggerOptions } from './config/swagger.js';
 
-const GitHubWebhookHandler = require('./github-webhook-handler');
+const app = express();
 
-// Crear y configurar el handler de webhooks
-const webhookHandler = new GitHubWebhookHandler();
+// Middleware para parsear JSON
+app.use(express.json());
 
-// Iniciar servidor
-const PORT = process.env.PORT || 3000;
-webhookHandler.start(PORT);
+// Middleware para parsear URL-encoded
+app.use(express.urlencoded({ extended: true }));
 
-// Manejar señales de cierre gracefully
-process.on('SIGTERM', () => {
-  console.log('🛑 Received SIGTERM, shutting down gracefully...');
-  process.exit(0);
+// Middleware para logging de peticiones (desarrollo)
+if (process.env.NODE_ENV === 'development') {
+  app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`);
+    next();
+  });
+}
+
+// Documentación de la API con Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions));
+
+// Ruta de health check
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    message: 'Servidor funcionando correctamente',
+    timestamp: new Date().toISOString()
+  });
 });
 
-process.on('SIGINT', () => {
-  console.log('🛑 Received SIGINT, shutting down gracefully...');
-  process.exit(0);
+// Rutas principales de la API
+app.use('/api', routes);
+
+// Manejo de rutas no encontradas
+app.use((req, res) => {
+  res.status(404).json({
+    status: 'error',
+    message: 'Ruta no encontrada',
+    path: req.path
+  });
 });
 
-module.exports = webhookHandler;
+// Middleware de manejo de errores
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Error interno del servidor';
+  
+  res.status(statusCode).json({
+    status: 'error',
+    message,
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
+});
+
+export default app;
