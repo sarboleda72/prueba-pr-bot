@@ -11,3 +11,5 @@ const snake_case_text = TEXT;
 const UPPERCASETEXT = TEXT;
 
 const UPPER_SNAKE_CASE_TEXT = TEXT;
+
+class orderService{}
