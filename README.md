@@ -1,4 +1,4 @@
-# API Gestión de Facturas - Cámara de Comercio para probar el pr review
+# API Gestión de Facturas - Cámara de Comercio para probar el pr review omitiendo
 
 API REST para la gestión y consulta automatizada de facturas radicadas, diseñada para integración con sistemas RPA.
 
