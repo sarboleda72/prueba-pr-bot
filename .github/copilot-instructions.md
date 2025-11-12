@@ -21,6 +21,15 @@ Estas reglas se aplican a todos los PRs de este repositorio:
 - Evita abreviaciones confusas o palabras en Spanglish.
 - Promueve el uso de verbos en infinitivo para funciones (e.g. `getUserData`, `calculateTotal`).
 
+## 🏛️ Arquitectura de software
+- Verifica que cada capa respete su responsabilidad específica:
+  - **Routes**: solo definir rutas y endpoints, sin lógica de negocio.
+  - **Controllers**: gestionar peticiones HTTP, validaciones de entrada y respuestas, sin lógica de negocio compleja.
+  - **Services**: contener la lógica de negocio y orquestación.
+  - **Models/Repositories**: gestionar acceso a datos y persistencia.
+- Detecta violaciones de separación de capas (e.g. lógica de negocio en controllers, acceso directo a BD desde routes).
+- Sugiere refactorización cuando una capa invada responsabilidades de otra.
+
 ---
 
 Gracias Copilot 🤖

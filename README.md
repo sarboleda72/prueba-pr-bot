@@ -1,86 +1,169 @@
-# 🧪 Test Project - PR Code Reviewer
+# dian-api
 
-Este es un proyecto de prueba para validar todas las reglas del PR Code Reviewer.
+## Descripción
+Este proyecto es una API para la gestión de facturas electrónicas, utilizando Sequelize como ORM para interactuar con la base de datos. La API permite crear facturas, verificar la existencia de entidades (emisores y receptores), generar reportes en formato Excel y realizar autenticación mediante JWT.
 
-## 📁 Estructura del proyecto
+## Requisitos
+- Node.js
+- PostgreSQL
 
-```
-test-project/
-├── ✅ correct/          # Ejemplos de código CORRECTO
-├── ❌ incorrect/        # Ejemplos de código INCORRECTO
-├── 🔧 mixed/            # Ejemplos mixtos (algunos errores)
-└── README.md
-```
+## Instalación
+1. Clona el repositorio:
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   ```
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+3. Configura las variables de entorno en un archivo `.env`:
+   ```env
+   JWT_USER=<usuario_jwt>
+   JWT_PASSWORD=<contraseña_jwt>
+   JWT_SECRETO=<secreto_jwt>
+   JWT_TIEMPO_EXPIRA=<tiempo_expiracion_jwt>
+   ETL_WS=<url_servicio_etl>
+   ```
 
-## 🎯 Reglas que se validan
+## Uso
+1. Inicia el servidor:
+   ```bash
+   npm start
+   ```
+2. La API estará disponible en `http://localhost:4000`.
 
-### 1. **Naming Convention (Nombres de archivos y carpetas)**
-- ✅ kebab-case preferido: `user-service.js`
-- ✅ camelCase permitido: `userService.js`
-- ✅ PascalCase SOLO en `models/`: `User.js`
-- ❌ snake_case: `user_service.js`
-- ❌ Puntos en nombres: `user.service.js`
-- ❌ Espacios o caracteres especiales
+## Endpoints
 
-### 2. **Code Style (Estilo de código JavaScript)**
-- ✅ Variables/funciones: camelCase
-- ✅ Clases: PascalCase
-- ✅ Constantes literales: UPPER_SNAKE_CASE
-- ❌ Variables en snake_case
-- ❌ Constantes sin UPPER_SNAKE_CASE
-- 🔧 Excepciones: `require()`, `sequelize.define()`, `mongoose.model()`, `new`
+### Autenticación
+- **POST /auth/token**
+  - **Descripción**: Autentica un usuario y devuelve un token JWT.
+  - **Cuerpo de la solicitud**:
+    ```json
+    {
+      "usuario": "string",
+      "clave": "string"
+    }
+    ```
+  - **Respuesta**:
+    ```json
+    {
+      "status": 200,
+      "message": "Autenticado",
+      "data": "token_jwt"
+    }
+    ```
 
-### 3. **Gitignore Analyzer**
-- ✅ Archivo `.gitignore` existe
-- ✅ Incluye: `node_modules/`, `.env*`, `dist/`
+### Facturas
+- **POST /facturas**
+  - **Descripción**: Crea una nueva factura.
+  - **Autenticación**: Requiere un token JWT en el encabezado `Authorization`.
+  - **Cuerpo de la solicitud**:
+    ```json
+    {
+      "clienteNombre": "string",
+      "clienteDocumento": "string",
+      "Lote": "string",
+      "CUFE": "string",
+      "nombreEmisor": "string",
+      "nitEmisor": "string",
+      "nombreReceptor": "string",
+      "nitReceptor": "string",
+      "fechaEmision": "string",
+      "folio": "string",
+      "serie": "string",
+      "IVA": "string",
+      "total": "string",
+      "pdf": "base64",
+      "acuses": {
+        "030": true,
+        "031": true,
+        "032": true,
+        "033": true
+      }
+    }
+    ```
+  - **Respuesta**:
+    ```json
+    {
+      "status": 200,
+      "message": "Factura creada correctamente.",
+      "data": { ... }
+    }
+    ```
 
-### 4. **Env Analyzer**
-- ❌ Archivos `.env` en el repositorio
-- ❌ Archivos `.env.local`, `.env.production`
+- **GET /facturas/reporte**
+  - **Descripción**: Genera un reporte de facturas en formato Excel.
+  - **Autenticación**: Requiere un token JWT en el encabezado `Authorization`.
+  - **Parámetros de consulta**:
+    - `lote` (requerido): Lote de facturas a consultar.
+    - `responseType` (opcional): Tipo de respuesta deseada (`descarga` o `base64`).
+  - **Ejemplo de solicitud**:
+    - Para descargar el archivo:
+      ```
+      GET /facturas/reporte?lote=42343242334&responseType=descarga
+      ```
+    - Para obtener el archivo en Base64:
+      ```
+      GET /facturas/reporte?lote=42343242334
+      ```
+  - **Respuesta (Base64)**:
+    ```json
+    {
+      "status": 200,
+      "message": "Reporte generado correctamente.",
+      "data": {
+        "excelBase64": "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
+      }
+    }
+    ```
 
-### 5. **Dependency Analyzer**
-- ❌ Carpeta `node_modules/` en el repo
-- ❌ Carpetas `.venv/`, `venv/`, `__pycache__/`
+## Estructura del Proyecto
+- `src/controllers`: Controladores de la API.
+- `src/middlewares`: Middlewares para autenticación y autorización.
+- `src/models`: Modelos de Sequelize.
+- `src/routes`: Rutas de la API.
+- `src/services`: Servicios para la lógica de negocio.
+- `src/utils`: Utilidades como generación de archivos Excel.
 
-## 🚀 Cómo probar
+## Ejemplo de Solicitud en Postman
 
-### Opción 1: Análisis local
-```bash
-cd ..
-node test/test-analyzer.js test-project
-```
+### Crear Factura
+1. **Método**: POST
+2. **URL**: `http://localhost:4000/facturas`
+3. **Headers**:
+   - `Content-Type`: `application/json`
+   - `Authorization`: `Bearer <tu_token_jwt>`
+4. **Body**: Selecciona `raw` y `JSON`, luego pega el siguiente JSON:
+    ```json
+    {
+      "clienteNombre": "Juan Perez",
+      "clienteDocumento": "123456789",
+      "Lote": "42343242334",
+      "CUFE": "ABC123456789",
+      "nombreEmisor": "Empresa Emisora",
+      "nitEmisor": "987654321",
+      "nombreReceptor": "Empresa Receptora",
+      "nitReceptor": "123456789",
+      "fechaEmision": "2025-03-12",
+      "folio": "001",
+      "serie": "A",
+      "IVA": "19.00",
+      "total": "1000.00",
+      "pdf": "base64",
+      "acuses": {
+        "030": true,
+        "031": true,
+        "032": true,
+        "033": true
+      }
+    }
+    ```
 
-### Opción 2: Crear PR en GitHub
-1. Sube este proyecto a un repositorio
-2. Instala el GitHub App "PR Code Reviewer"
-3. Crea un PR con cambios
-4. El bot comentará automáticamente
+### Generar Reporte
+1. **Método**: GET
+2. **URL**: `http://localhost:4000/facturas/reporte?lote=42343242334&responseType=descarga`
+3. **Headers**:
+   - `Authorization`: `Bearer <tu_token_jwt>`
 
-## 📊 Resultados esperados
-
-### En carpeta `correct/`
-- ✅ Todos los archivos deberían pasar las validaciones
-- ✅ Sin errores de naming
-- ✅ Sin errores de code style
-
-### En carpeta `incorrect/`
-- ❌ Detectar errores de naming (puntos, snake_case)
-- ❌ Detectar errores de code style
-- ❌ Archivos `.env` detectados
-- ❌ `node_modules/` detectado
-
-### En carpeta `mixed/`
-- ⚠️ Algunos archivos correctos
-- ❌ Algunos archivos con errores
-
-## 🎓 Propósito
-
-Este proyecto sirve para:
-1. **Probar** que todas las reglas funcionan
-2. **Demostrar** ejemplos claros de buenas/malas prácticas
-3. **Validar** el bot antes de usarlo en proyectos reales
-4. **Compartir** como referencia de convenciones
-
----
-
-**Creado para probar PR Code Reviewer** 🤖
+## Contribuciones
+Las contribuciones son bienvenidas. Por favor, abre un issue o un pull request para discutir cualquier cambio que desees realizar.
