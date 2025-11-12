@@ -1,6 +1,6 @@
 # dian-api
 
-## Descripción
+## Descripción para revisar el code review
 Este proyecto es una API para la gestión de facturas electrónicas, utilizando Sequelize como ORM para interactuar con la base de datos. La API permite crear facturas, verificar la existencia de entidades (emisores y receptores), generar reportes en formato Excel y realizar autenticación mediante JWT.
 
 ## Requisitos
