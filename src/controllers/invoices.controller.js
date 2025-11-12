@@ -2,7 +2,7 @@ const invoiceService = require('../services/invoices.services');
 const ResponseModel = require('../models/Response.model');
 
 // Función para validar si es un PDF válido (validación básica)
-const validatePDF = (pdfData) => {
+const validate_PDF = (pdfData) => {
   try {
     // Si viene con prefijo data:application/pdf;base64, lo removemos
     let base64Data = pdfData;

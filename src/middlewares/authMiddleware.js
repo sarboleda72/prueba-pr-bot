@@ -4,7 +4,7 @@ const {
   login,
 } = require('./jwtMiddleware');
 
-const loginAPI = async (req, res) => {
+const LOGINAPI = async (req, res) => {
   const { usuario, clave } = req.body;
 
   if (!usuario || !clave) {
