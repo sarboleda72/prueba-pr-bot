@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: ocgn-ordenes-backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Variables de entorno desde archivo .env
+      - DATABASE_URL=${DATABASE_URL}
+      - USER_CYT=${USER_CYT}
+      - PASSWORD=${PASSWORD}
+      # Agregar otras variables de entorno que necesites
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - app-network
+    # Si quieres desarrollo con hot-reload, descomenta esto:
+    # volumes:
+    #   - .:/app
+    # command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+networks:
+  app-network:
+    driver: bridge

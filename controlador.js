@@ -1,1 +1,0 @@
-console.log(`✅ PDF válido - Tamaño: ${(pdfValidation.size / 1024).toFixed(2)} KB`);    

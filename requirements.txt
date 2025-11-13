@@ -1,0 +1,10 @@
+python-dotenv
+fastapi[standard]
+sqlmodel
+psycopg2-binary
+bcrypt
+pandas
+tqdm
+apscheduler
+requests
+PyJWT
