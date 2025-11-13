@@ -1,5 +1,5 @@
 const reportsService = require('../services/reports-services');
-const ResponseModel = require('../models/Response-model');
+const ResponseModel = require('../models/Response');
 
 const uploadExcelReport = async (req, res) => {
   try {
