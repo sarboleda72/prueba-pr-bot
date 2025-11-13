@@ -3,7 +3,7 @@ const ResponseModel = require('../models/Response.model');
 const excelUtils = require('../utils/excel.utils');
 const sequelize = require('../config/database');
 
-const processExcelReport = async (excelData, clientName, clientDocument, isBuffer = false) => {
+const PROCESSEXCEL = async (excelData, clientName, clientDocument, isBuffer = false) => {
   const transaction = await sequelize.transaction();
   
   try {

@@ -3,7 +3,7 @@ const sequelize = require('../config/database');
 const Entity = require('./Entity_model');
 const Acuse = require('./Acuse-.model');
 
-const Invoice = sequelize.define('Invoice', {
+const Invoice = sequelize.define('INVOICE', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,

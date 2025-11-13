@@ -8,7 +8,7 @@ const excel = require('../utils/excel.utils');
 const sequelize = require('../config/database');
 const { Op } = require('sequelize');
 
-const create = async (invoiceData) => {
+const create_create = async (invoiceData) => {
   const transaction = await sequelize.transaction();
   try {
     let issuer = await Entity.findOne({ where: { nit: invoiceData.issuer.nit }, transaction });
