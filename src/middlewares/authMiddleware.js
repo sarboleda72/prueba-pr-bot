@@ -1,4 +1,4 @@
-const ResponseModel = require('../models/Response.model');
+const ResponseModel = require('../models/Response-model');
 const {
   verifyJWT,
   login,

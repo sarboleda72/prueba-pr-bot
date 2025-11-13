@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const invoices = require('../controllers/invoices.controller');
+const invoices = require('../controllers/invoices-controller');
 const authJwt = require('../middlewares/authMiddleware');
 const router = express.Router();
 

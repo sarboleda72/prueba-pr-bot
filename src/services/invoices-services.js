@@ -1,9 +1,9 @@
 const axios = require('axios');
-const Entity = require('../models/Entity.model');
-const Acuse = require('../models/Acuse.model');
-const Invoice = require('../models/Invoice.model');
-const Reporte = require('../models/Reporte.model');
-const ResponseModel = require('../models/Response.model');
+const Entity = require('../models/Entity-model');
+const Acuse = require('../models/Acuse-model');
+const Invoice = require('../models/Invoice-model');
+const Reporte = require('../models/Reporte-model');
+const ResponseModel = require('../models/Response-model');
 const excel = require('../utils/excel.utils');
 const sequelize = require('../config/database');
 const { Op } = require('sequelize');

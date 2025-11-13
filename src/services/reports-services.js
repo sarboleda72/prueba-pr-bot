@@ -1,5 +1,5 @@
-const Reporte = require('../models/Reporte.model');
-const ResponseModel = require('../models/Response.model');
+const Reporte = require('../models/Reporte-model');
+const ResponseModel = require('../models/Response-model');
 const excelUtils = require('../utils/excel.utils');
 const sequelize = require('../config/database');
 
