@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Entity = require('./Entity');
-const Acuse = require('./Acuse');
+const Entity = require('./Entity-');
+const Acuse = require('./Acuse_');
 
 const Invoice = sequelize.define('Invoice', {
   id: {
