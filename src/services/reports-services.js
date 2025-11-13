@@ -7,8 +7,9 @@ const processExcelReport = async (excelData, clientName, clientDocument, isBuffe
   const transaction = await sequelize.transaction();
   
   try {
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
     // Generar lote único: año+mes+dia+hora+minutos+segundos
-    const now = new Date();
+    const NOW = new Date();
     const batch = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
     
     // Leer y parsear el archivo Excel
